@@ -19,8 +19,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use strict;
 use warnings;
-use Test::More tests => 1;
+use Test::More tests => 4;
 use Test::Deep;
+use Data::Dumper;
 
 require "hash.pl";
 
@@ -35,15 +36,16 @@ sub areIdentical {
     $hash1 = $_[0];
     $hash2 = $_[1];
 
-    if (%$hash1 != %$hash2) {
-        return 0;
+    if (%$hash1 ne %$hash2) {
+        return undef;
     }
 
     foreach my $k (keys(%$hash1)) {
-        if (!defined(%$hash2{$k})) {
+        if (!defined($hash2->{$k})) {
             return undef;
         }
-        if ($$hash1{$k} != $$hash2{$k}) {
+
+        if ($hash1->{$k} ne $hash2->{$k}) {
             return undef;
         }
     }
@@ -51,17 +53,13 @@ sub areIdentical {
     return 1;
 }
 
-ok(ref(hashFile()) == "SCALAR" && hashFile() == 1, "no argument test"); # Check no file case
-ok(ref(hashFile("notExist.txt")) == "SCALAR" && hashFile("notExist.txt") == 2, "file not exits test"); # Check file not exist case
+ok(ref(\(hashFile())) eq "SCALAR" && hashFile() == 1, "no argument test"); # Check no file case
+ok(ref(\(hashFile("notExist.txt"))) eq "SCALAR" && hashFile("notExist.txt") == 2, "file not exits test"); # Check file not exist case
 
-open(my $f, "<", "test.txt");
-ok(ref(hashFile("test.txt")) == "SCALAR" && hashFile("test.txt") == 3, "File already used test"); # Check can't read the file
-close($f);
+my %expectedHash = ("adnexam" => 4, "igitur" => 1, "praetenturis" => 3, "Lycaoniam" => 2, "pascebantur" => 2, "provincialium" => 2, "John-Michon" => 1 );
 
-my %expectedHash = {"adnexam" => 4, "igitur" => 3, "praetenturis" => 3, "lycaoniam" => 2, "pascebantur" => 2, "provincialium" => 2, "John-Michon" => 1};
+ok(ref(hashFile("test.txt")) eq "HASH", "Returned type for good file");
 
-ok(ref(hashFile("test.txt")) == "HASH", "Returned type for good file");
+my $result = hashFile("test.txt");
 
-my %result = hashFile("test.txt");
-
-ok(areIdentical(\%result, \%expectedHash), "Check result for a good file");
+ok(areIdentical($result, \%expectedHash), "Check result for a good file");

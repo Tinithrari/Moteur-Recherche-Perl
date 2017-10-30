@@ -21,7 +21,7 @@ use strict;
 use warnings;
 
 =pod
-This function hash a document and return each word of documents with its occurencies number
+This function hash a document and return each word of documents with its oc number
 
 return undef if there is an error
 =cut
@@ -43,28 +43,30 @@ sub hashFile
 	my $filename = $_[0];
 	open(my $file, "<", $filename) || return 3;
 
-	my %occurencies;
+	my %oc;
 
 	# Get each line and parse it to get the words
 	while (my $line = <$file>) {
-		my @matches = ($line ~= m/[a-zA-Z\-]/g); # A word is only composed of letters
+		my @matches = ($line =~ m/[a-zA-Z\-]+/g); # A word is only composed of letters
 
-		foreach (my $word (@matches)) {
-			if (defined($occurencies{$word})) {
-				++$occurencies{$word};
+		foreach my $word (@matches) {
+			if (defined($oc{$word})) {
+				++$oc{$word};
 			} else {
-				$occurencies{$word} = 1;
+				$oc{$word} = 1;
 			}
 		}
 	}
 
 	close($file);
-	return occurencies;
+	return \%oc;
 }
 
 =pod
 Return display the error type of the hash function
 =cut
 sub hashError {
-	print(STDERR $HASHERRORMESSAGES[$hashError]);
+	print(STDERR (HASHERRORMESSAGES)[$hashError]);
 }
+
+1; # for inclusions
