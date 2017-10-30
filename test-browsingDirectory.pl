@@ -19,8 +19,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use strict;
 use warnings;
-use Test::More tests => 4;
+use Test::More tests => 6;
 use Test::Deep;
 use Data::Dumper;
 
-require "browsingDirectory.pl"
+require "browsingDirectory.pl";
+
+my $refer = browseDirectory();
+
+ok(ref($refer) eq "SCALAR", "check return type for first error");
+ok($$refer == 1, "Checking first error code");
+
+$refer = browseDirectory("Not a directory");
+
+ok(ref($refer) eq "SCALAR", "check return type for second error");
+ok($$refer == 2, "Checking second error code");
+
+$refer = browseDirectory(".");
+
+ok(ref($refer) eq "HASH", "Check return type for a normal case");
+
+# print(Dumper(%$refer));
+
+ok(defined($refer->{"./browsingDirectory.pl"})
+ && defined($refer->{"./hash.pl"}) && defined($refer->{"./test-hash.pl"})
+  && defined($refer->{"./LICENSE"}) && defined($refer->{"./README.md"})
+   && defined($refer->{"./test-browsingDirectory.pl"}) && defined($refer->{"./test.txt"}));

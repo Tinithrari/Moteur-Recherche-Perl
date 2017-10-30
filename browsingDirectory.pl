@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 use strict;
 use warnings;
 
-require "hash.pl" # Hash function
+require "hash.pl"; # Hash function
 
 =pod
 Browse a directory to create a hash of each file present in the directory
@@ -30,7 +30,7 @@ Out: a reference on an error code or on an hashmap corresponding to the hash.
 
 use constant BROWSINGERROR => ["No error", "Missing argument", "The argument is not a directory"];
 
-$browsingError = 0; # Browsing Error
+my $browsingError = 0; # Browsing Error
 
 sub browseDirectory {
     # Check if there is the correct amount of parameter
@@ -39,7 +39,7 @@ sub browseDirectory {
         return \$browsingError;
     }
 
-    $directoryName = $_[0];
+    my $directoryName = $_[0];
 
     # Check if the parameter is a folder
     if (! -d $directoryName) {
@@ -53,7 +53,7 @@ sub browseDirectory {
     }
 
     $directoryName .= "*"; # add a star for the glob function
-    %folder = {}; # Create the hash for the folder
+    my %folder = {}; # Create the hash for the folder
 
     foreach my $file (glob($directoryName)) {
         $folder{$file} = hashFile($file);
