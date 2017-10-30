@@ -56,6 +56,9 @@ sub browseDirectory {
     my %folder = {}; # Create the hash for the folder
 
     foreach my $file (glob($directoryName)) {
+        if (! -f $file || ! -r $file) {
+            next;
+        }
         $folder{$file} = hashFile($file);
     }
 
