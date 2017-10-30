@@ -1,0 +1,4 @@
+test-hash:
+  script: "./test-hash.pl"
+  tags:
+    - perl

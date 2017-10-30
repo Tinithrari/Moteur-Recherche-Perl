@@ -23,7 +23,7 @@ use warnings;
 =pod
 This function hash a document and return each word of documents with its oc number
 
-return undef if there is an error
+return a reference on the error code if there is an error
 =cut
 
 my $hashError = 0; # Hash error code 
@@ -32,17 +32,23 @@ use constant HASHERRORMESSAGES => ["No error", "Missing file argument", "The fil
 sub hashFile 
 {
 	if (@_ == 0) {
-		return 1;
+		$hashError = 1;
+		return \$hashError;
 	}
 
 	if (! -e $_[0]) {
-		return 2;
+		$hashError = 2;
+		return \$hashError;
 	}
 
 	# Get a filename and open it
 	my $filename = $_[0];
-	open(my $file, "<", $filename) || return 3;
+	my $file;
 
+	if (! open($file, "<", $filename)) {
+		$hashError = 3;
+		return \$hashError;
+	}
 	my %oc;
 
 	# Get each line and parse it to get the words

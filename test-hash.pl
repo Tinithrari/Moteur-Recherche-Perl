@@ -53,13 +53,16 @@ sub areIdentical {
     return 1;
 }
 
-ok(ref(\(hashFile())) eq "SCALAR" && hashFile() == 1, "no argument test"); # Check no file case
-ok(ref(\(hashFile("notExist.txt"))) eq "SCALAR" && hashFile("notExist.txt") == 2, "file not exits test"); # Check file not exist case
+my $refer = hashFile();
+
+ok(ref($refer) eq "SCALAR" && $$refer == 1, "no argument test"); # Check no file case
+
+$refer = hashFile("notExist.txt");
+ok(ref($refer) eq "SCALAR" && $$refer == 2, "file not exits test"); # Check file not exist case
 
 my %expectedHash = ("adnexam" => 4, "igitur" => 1, "praetenturis" => 3, "Lycaoniam" => 2, "pascebantur" => 2, "provincialium" => 2, "John-Michon" => 1 );
 
-ok(ref(hashFile("test.txt")) eq "HASH", "Returned type for good file");
+$refer = hashFile("test.txt");
+ok(ref($refer) eq "HASH", "Returned type for good file");
 
-my $result = hashFile("test.txt");
-
-ok(areIdentical($result, \%expectedHash), "Check result for a good file");
+ok(areIdentical($refer, \%expectedHash), "Check result for a good file");
