@@ -53,7 +53,7 @@ sub browseDirectory {
     }
 
     $directoryName .= "*"; # add a star for the glob function
-    my %folder = {}; # Create the hash for the folder
+    my %folder = (); # Create the hash for the folder
 
     foreach my $file (glob($directoryName)) {
         if (! -f $file || ! -r $file) {
