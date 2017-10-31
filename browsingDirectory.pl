@@ -54,15 +54,27 @@ sub browseDirectory {
 
     $directoryName .= "*"; # add a star for the glob function
     my %folder = (); # Create the hash for the folder
+    my %wordOccurencies = ();
 
     foreach my $file (glob($directoryName)) {
         if (! -f $file || ! -r $file) {
             next;
         }
-        $folder{$file} = hashFile($file);
+
+        my $hashedFile = hashFile($file);
+        $folder{$file} = $hashedFile;
+
+        foreach my $word (keys(%$hashedFile)) {
+            if (defined($wordOccurencies{$word})) {
+                $wordOccurencies{$word}++;
+            }
+            else {
+                $wordOccurencies{$word} = 1;
+            }
+        }
     }
 
-    return \%folder;
+    return (\%folder, \%wordOccurencies);
 }
 
 1; # for inclusion

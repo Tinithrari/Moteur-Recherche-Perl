@@ -35,11 +35,11 @@ $refer = browseDirectory("Not a directory");
 ok(ref($refer) eq "SCALAR", "check return type for second error");
 ok($$refer == 2, "Checking second error code");
 
-$refer = browseDirectory(".");
+($refer) = browseDirectory(".");
 
 ok(ref($refer) eq "HASH", "Check return type for a normal case");
 
-# print(Dumper(%$refer));
+# print(Dumper(%$refer2));
 
 ok(defined($refer->{"./browsingDirectory.pl"})
  && defined($refer->{"./hash.pl"}) && defined($refer->{"./test-hash.pl"})
