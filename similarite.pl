@@ -71,17 +71,19 @@ sub documentSimilarity {
 
     my $numerateur = 0;
     my $denominateur = 0;
+    my $membre1 = 0;
+    my $membre2 = 0;
     
     # Calcule le numerateur
     foreach (my $w (@$words)) {
         my $intermediateComputing = 0;
         
         if (arrayContainsString(\(keys($hashD1)), $w)) {
-            $intermediateComputing = $hashD1{$w};
+            $intermediateComputing = $hashD1->{$w};
         }
         
         if (arrayContainsString(\(keys($hashD2)), $w)) {
-            $intermediateComputing *= $hashD2{$w};
+            $intermediateComputing *= $hashD2->{$w};
         }
 
         if (arrayContainsString(\(keys($hashD1)), $w) && arrayContainsString(\(keys($hashD2)), $w)) {
@@ -91,5 +93,18 @@ sub documentSimilarity {
         }
     }
 
-    # TODO Calcul du dénominateur
+    # Calcul du premier membre du denominateur
+    foreach (my $w (keys(%$hashD1))) {
+        $membre1 += $hashD1->{$w} * (arrayContainsString(\(keys($hashD1)), $w) && arrayContainsString(\(keys($hashD2)), $w) ? 0.5 : 0);
+    }
+
+    # Calcul du deuxieme membre
+    foreach (my $w (keys(%$hashD2))) {
+        $membre2 += $hashD2->{$w} * (arrayContainsString(\(keys($hashD1)), $w) && arrayContainsString(\(keys($hashD2)), $w) ? 0.5 : 0);
+    }
+
+    $denominateur = $membre1 * $membre2;
+
+    return 0 if ($denominateur == 0);
+    return $numerateur / $denominateur;
 }
