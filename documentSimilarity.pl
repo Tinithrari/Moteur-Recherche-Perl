@@ -27,7 +27,7 @@ require 'hash.pl';
 require 'union.pl';
 
 # Get the arrayContainsString function
-require 'arrayContainsString.pl'
+require 'arrayContainsString.pl';
 
 =pod
 =begin comment
