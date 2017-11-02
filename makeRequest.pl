@@ -36,7 +36,7 @@ Out: The most similar document from the directory
 =end comment
 =cut
 
-my $researchSuffix = "*";
+my $researchSuffix = "*.html";
 
 sub makeRequest {
     my $request = <>;
