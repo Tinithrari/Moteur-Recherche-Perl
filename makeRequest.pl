@@ -49,11 +49,15 @@ sub makeRequest {
     foreach my $file (glob($researchSuffix)) {
         my $similarity = documentSimilarity($fileName, $file);
 
+        die("A problem occured during the request, please try again later") if ($similarity < 0);
+
         if ($similarity > $highestSimilarity) {
             $highestSimilarity = $similarity;
             $mostSimilar = $file;
         }
     }
+
+    close($fileFlow);
 
     return $mostSimilar;
 }
