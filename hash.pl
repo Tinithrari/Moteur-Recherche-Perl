@@ -56,7 +56,9 @@ sub hashFile
 	while (my $line = <$file>) {
 		$fileContent .= $line;
 	}
-		my @matches = ($line !~ m/<\.+*>+/g); # A word is only composed of letters
+		my @noCtags = ($line !~ m/<\.+*>+/g); # A word is only composed of letters
+		my $str = join(" ", @noCtags);
+		my @matches = ($str ~= m/[a-ZA-Z\-]+/g);
 
 		foreach my $word (@matches) {
 			if (defined($oc{$word})) {
