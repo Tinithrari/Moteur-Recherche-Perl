@@ -41,7 +41,7 @@ sub union {
 
     my ($a1, $a2) = @_;
 
-    if (ref($a1) != "ARRAY" && ref($a2) != "ARRAY") {
+    if (ref($a1) ne "ARRAY" && ref($a2) ne "ARRAY") {
         $unionError = 2;
         return \$unionError;
     }
@@ -58,3 +58,5 @@ sub union {
 
     return \@un;
 }
+
+1;

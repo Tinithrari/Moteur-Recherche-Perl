@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use strict;
 use warnings;
+use Data::Dumper;
 
 =pod
 This function hash a document and return each word of documents with its oc number
@@ -56,16 +57,15 @@ sub hashFile
 	while (my $line = <$file>) {
 		$fileContent .= $line;
 	}
-		my @noCtags = ($line !~ m/<\.+*>+/g); # A word is only composed of letters
-		my $str = join(" ", @noCtags);
-		my @matches = ($str ~= m/[a-ZA-Z\-]+/g);
+	
+	($fileContent =~ s/<[^>]+>/ /g); # A word is only composed of letters
+	my @matches = ($fileContent =~ m/[a-zA-Z\-]+/g);
 
-		foreach my $word (@matches) {
-			if (defined($oc{$word})) {
-				++$oc{$word};
-			} else {
-				$oc{$word} = 1;
-			}
+	foreach my $word (@matches) {
+		if (defined($oc{$word})) {
+			++$oc{$word};
+		} else {
+			$oc{$word} = 1;
 		}
 	}
 

@@ -20,6 +20,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 use strict;
 use warnings;
 
+require 'makeRequest.pl';
+
 =pod
 =begin comment
 
@@ -40,13 +42,9 @@ if (! -d $directory) {
     exit(1);
 }
 
-chdir($directory) || die("Cannot access the directory\n")
+chdir($directory) || die("Cannot access the directory\n");
 
-while (1) {
+for (;;) {
     my $file = makeRequest();
-    my $flow = open($file);
-
-    while (<>) {
-        print($_);
-    }
+    print "$file\n";
 }

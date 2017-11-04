@@ -39,25 +39,24 @@ Out: The most similar document from the directory
 my $researchSuffix = "*.html";
 
 sub makeRequest {
-    my $request = <>;
+    my $request = <STDIN>;
     my $mostSimilar = undef;
     my $highestSimilarity = -1;
 
     my ($fileFlow, $fileName) = tempfile();
-    print($fh "$request");
+    print($fileFlow "$request");
+    close($fileFlow);
 
     foreach my $file (glob($researchSuffix)) {
         my $similarity = documentSimilarity($fileName, $file);
 
-        die("A problem occured during the request, please try again later") if ($similarity < 0);
+        die("A problem occured during the request, please try again later. Error code: " . $similarity) if ($similarity < 0);
 
         if ($similarity > $highestSimilarity) {
             $highestSimilarity = $similarity;
             $mostSimilar = $file;
         }
     }
-
-    close($fileFlow);
 
     return $mostSimilar;
 }

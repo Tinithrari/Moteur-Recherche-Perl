@@ -38,9 +38,10 @@ sub arrayContainsString {
 
     my ($a1, $elt) = @_;
 
-    if (ref($a1) != "ARRAY") {
+    if (ref($a1) ne "ARRAY") {
         return -1;
     }
     
     return grep {$_ eq $elt} @$a1;
 }
+1;
